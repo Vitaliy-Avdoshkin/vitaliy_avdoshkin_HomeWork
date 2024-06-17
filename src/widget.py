@@ -1,10 +1,12 @@
+from datetime import datetime as dt
+
 from src.masks import get_mask_account, get_mask_card_number
 
 
 def mask_account_card(account_info: str) -> str:
     """Функция общей маскировки карты и счета"""
 
-    account_number = account_info[account_info.rfind(" ") + 1 :]
+    account_number = account_info[account_info.rfind(" ") + 1:]
 
     if "Счет" in account_info:
         return (
@@ -31,3 +33,4 @@ def get_data(datatime: str) -> str:
 
 
 print(get_data("2018-07-11T02:26:18.671407"))
+
