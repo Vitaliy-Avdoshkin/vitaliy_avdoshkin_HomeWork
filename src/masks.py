@@ -1,4 +1,4 @@
-def get_mask_card_number(card_number: int) -> str:
+def get_mask_card_number(card_number: str) -> str:
     """Функция маскировки номера карты"""
 
     card_number_str = str(card_number)
@@ -9,10 +9,10 @@ def get_mask_card_number(card_number: int) -> str:
     # return "Неверный формат банковской карты"
 
 
-print(get_mask_card_number(7000792289606361))
+print(get_mask_card_number("7000792289606361"))
 
 
-def get_mask_account(accound_number: int) -> str:
+def get_mask_account(accound_number: str) -> str:
     """Функция маскировки номера счета"""
 
     account_number_str = str(accound_number)
@@ -23,4 +23,4 @@ def get_mask_account(accound_number: int) -> str:
     # return "Неверный формат номера счета"
 
 
-print(get_mask_account(73654108430135874305))
+print(get_mask_account("73654108430135874305"))

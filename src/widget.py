@@ -1,4 +1,4 @@
-from masks import get_mask_account, get_mask_card_number
+from src.masks import get_mask_account, get_mask_card_number
 
 
 def mask_account_card(account_info: str) -> str:
@@ -25,6 +25,7 @@ print(mask_account_card("Счет 73654108430135874305"))
 
 
 def get_data(datatime: str) -> str:
+    """Функция преобразования даты"""
 
     return f"{datatime[8:10]}.{datatime[5:7]}.{datatime[:4]} "
 
