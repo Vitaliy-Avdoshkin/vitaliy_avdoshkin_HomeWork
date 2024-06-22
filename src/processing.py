@@ -2,7 +2,7 @@ from typing import Any
 
 
 def filter_by_state(list: Any, state="EXECUTED") -> Any:
-    """Функция фильтрации операций по ключу state """
+    """Функция фильтрации операций по ключу state"""
 
     filtered_list = []
 
