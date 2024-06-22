@@ -2,6 +2,7 @@ from typing import Any
 
 
 def filter_by_state(list: Any, state="EXECUTED") -> Any:
+    """Функция фильтрации операций по ключу state """
 
     filtered_list = []
 
@@ -38,6 +39,7 @@ print(
 
 
 def sort_by_date(list: Any, ascending=True) -> Any:
+    """Функция сортировки операций по дате"""
 
     sorted_list = sorted(list, key=lambda x: x.get("date"), reverse=ascending)
     return sorted_list
