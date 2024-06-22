@@ -1,7 +1,7 @@
-from typing import Iterable
+from typing import Any
 
 
-def filter_by_state(list: Iterable[list], state="EXECUTED") -> Iterable[list]:
+def filter_by_state(list: Any, state="EXECUTED") -> Any:
 
     filtered_list = []
 
@@ -37,7 +37,7 @@ print(
 )
 
 
-def sort_by_date(list: Iterable[list], ascending=True) -> Iterable[list]:
+def sort_by_date(list: Any, ascending=True) -> Any:
 
     sorted_list = sorted(list, key=lambda x: x.get("date"), reverse=ascending)
     return sorted_list
@@ -63,6 +63,5 @@ print(
                 "date": "2018-10-14T08:21:33.419441",
             },
         ]
-
     )
 )
