@@ -42,7 +42,7 @@ def get_data(date: str) -> str:
     """Функция преобразования даты"""
 
     date_update = datetime.strptime(date, "%Y-%m-%dT%H:%M:%S.%f")
-    return date_update.strftime("%d-%m-%Y")
+    return date_update.strftime("%d.%m. %Y")
 
 
 print(get_data("2018-07-11T02:26:18.671407"))
