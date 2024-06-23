@@ -10,7 +10,9 @@
 ```
 git clone https://github.com/Vitaliy-Avdoshkin/vitaliy_avdoshkin_HomeWork.git
 ```
-2. Установите библиотеки Flake8, black, isort, mypy в группу lint.
+## Конфигурация
+1. Установите библиотеки Flake8, black, isort, mypy в группу lint.
+
 
 ## Использование:
 

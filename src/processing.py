@@ -1,12 +1,12 @@
-from typing import Any
+from typing import Any, Iterable
 
 
-def filter_by_state(list: Any, state="EXECUTED") -> Any:
+def filter_by_state(input_list: list[Any], state="EXECUTED") -> list[Any]:
     """Функция фильтрации операций по ключу state"""
 
     filtered_list = []
 
-    for element in list:
+    for element in input_list:
         if element["state"] == state:
             filtered_list.append(element)
 
@@ -38,10 +38,10 @@ print(
 )
 
 
-def sort_by_date(list: Any, ascending=True) -> Any:
+def sort_by_date(input_list: list[Any], ascending=True) -> list[Any]:
     """Функция сортировки операций по дате"""
 
-    sorted_list = sorted(list, key=lambda x: x.get("date"), reverse=ascending)
+    sorted_list = sorted(input_list, key=lambda x: x.get("date"), reverse=ascending)
     return sorted_list
 
 
@@ -65,5 +65,7 @@ print(
                 "date": "2018-10-14T08:21:33.419441",
             },
         ]
+        , False
+
     )
 )
