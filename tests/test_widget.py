@@ -17,9 +17,9 @@ def test_mask_account_card(x):
     account_number = x[x.rfind(" ") + 1 :]
 
     if "Счет" in x:
-        return x[: x.rfind(" ")] + " " + get_mask_account(account_number)
+        assert x[: x.rfind(" ")] + " " + get_mask_account(account_number)
     else:
-        return x[: x.rfind(" ")] + " " + get_mask_card_number(account_number)
+        assert x[: x.rfind(" ")] + " " + get_mask_card_number(account_number)
 
 
 def test_get_data(input_date):
