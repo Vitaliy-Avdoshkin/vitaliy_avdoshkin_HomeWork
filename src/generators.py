@@ -1,3 +1,5 @@
+from typing import Any
+
 transactions = [
     {
         "id": 939719570,
@@ -60,9 +62,6 @@ transactions = [
         "to": "Счет 14211924144426031657",
     },
 ]
-
-
-from typing import Any
 
 
 def filter_by_currency(transactions: list[Any], currency: str) -> Any:
