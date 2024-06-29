@@ -92,6 +92,7 @@ for _ in range(5):
 
 
 def card_number_generator(min, max):
+    """Функция возвращает номера банковских карт в заданном диапозоне"""
     while True:
         if min <= max:
             number = ""
