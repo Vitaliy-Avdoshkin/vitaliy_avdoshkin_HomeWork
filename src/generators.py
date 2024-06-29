@@ -97,7 +97,8 @@ def card_number_generator(min, max):
             number = ""
             for i in range(min, max + 1):
                 number += "0" * (16 - len(str(i))) + str(i)
-                form_num = number[:16]
+                #form_num = number[:16]
+                form_num = number[:4] + ' ' + number[4:8] + ' ' + number[8:12] + ' ' + number[12:16]
             yield form_num
             min += 1
 
