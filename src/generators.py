@@ -1,4 +1,4 @@
-from typing import Any
+from typing import Any, Iterator
 
 transactions = [
     {
@@ -76,3 +76,31 @@ usd_transactions = filter_by_currency(transactions, "USD")
 
 for _ in range(2):
     print(next(usd_transactions)["id"])
+
+
+def transaction_descriptions(transactions: list[Any]) -> Iterator[str]:
+    """Функция возвращает описание каждой операции по очереди"""
+
+    for i in transactions:
+        yield i["description"]
+
+
+descriptions = transaction_descriptions(transactions)
+
+for _ in range(5):
+    print(next(descriptions))
+
+
+def card_number_generator(min, max):
+    while True:
+        if min <= max:
+            number = ""
+            for i in range(min, max + 1):
+                number += "0" * (16 - len(str(i))) + str(i)
+                form_num = number[:16]
+            yield form_num
+            min += 1
+
+
+for card_number in card_number_generator(1, 5):
+    print(card_number)
