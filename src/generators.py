@@ -110,5 +110,5 @@ def card_number_generator(min, max):
             min += 1
 
 
-for card_number in card_number_generator(1, 5):
+for card_number in card_number_generator(1, 10):
     print(card_number)
