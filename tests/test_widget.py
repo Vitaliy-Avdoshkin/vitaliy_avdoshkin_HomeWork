@@ -14,7 +14,7 @@ from src.widget import get_data
     ],
 )
 def test_mask_account_card(x):
-    account_number = x[x.rfind(" ") + 1 :]
+    account_number = x[x.rfind(" ") + 1:]  # fmt: skip
 
     if "Счет" in x:
         assert x[: x.rfind(" ")] + " " + get_mask_account(account_number)
