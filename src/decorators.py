@@ -3,6 +3,11 @@ from functools import wraps
 
 
 def log(filename: str) -> Any:
+    """Декоратор для логирования вызовов функции.
+    Логирует вызов функции и её результат в файл или консоль.
+    Принимает необязательный аргумент filename для указания файла логирования.
+    """
+
     def decorator(func: Any) -> Any:
         @wraps(func)
         def wrapper(*args: Any, **kwargs: Any) -> Any:
@@ -11,7 +16,7 @@ def log(filename: str) -> Any:
                 log_message = "my_function ok"
                 print(log_message)
             except Exception as e:
-                log_message = f"my_function_ error: {e}. Input:{args}, {kwargs}"
+                log_message = f"my_function error: {e}. Input:{args}, {kwargs}"
             if filename:
                 with open(filename, "a", encoding="utf-8") as file:
                     file.write(log_message)
@@ -32,3 +37,4 @@ def my_function(x, y):
 
 
 print(my_function(1, 2))
+

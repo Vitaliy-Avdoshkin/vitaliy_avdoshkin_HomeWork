@@ -9,7 +9,7 @@ def test_log_positive():
         return x + y
 
     result = my_function(1, 5)
-    assert result == 3
+    assert result == 6
 
 
 def test_log_caps(capsys):
