@@ -19,5 +19,5 @@ def test_log_caps(capsys):
 
 
 def test_log_excep():
-    with pytest.raises(Exception):
-        my_function
+    with pytest.raises(TypeError):
+        my_function(1, 3)
