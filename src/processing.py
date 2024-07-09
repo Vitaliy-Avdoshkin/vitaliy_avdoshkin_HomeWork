@@ -1,7 +1,7 @@
 from typing import Any
 
 
-def filter_by_state(input_list: list[Any], state="EXECUTED") -> list[Any]:
+def filter_by_state(input_list: list[Any], state="EXECUTED") -> Any:
     """Функция фильтрации операций по ключу state"""
 
     filtered_list = []
@@ -12,7 +12,7 @@ def filter_by_state(input_list: list[Any], state="EXECUTED") -> list[Any]:
 
             return filtered_list
     else:
-        return "Пустой список"
+        return "Список пуст"
 
 
 print(
@@ -40,13 +40,16 @@ print(
 )
 
 
-def sort_by_date(input_list: list[Any], descending=True) -> list[Any]:
+def sort_by_date(input_list: list[Any], descending=True) -> Any:
     """Функция сортировки операций по дате"""
     if len(input_list) > 0:
-        sorted_list = sorted(input_list, key=lambda x: x.get("date"), reverse=descending)
+        sorted_list = sorted(
+            input_list, key=lambda x: x.get("date"), reverse=descending
+        )
         return sorted_list
     else:
         return "Список пуст"
+
 
 print(
     sort_by_date(
