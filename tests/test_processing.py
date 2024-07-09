@@ -14,4 +14,6 @@ def test_sort_by_date(date):
 
 
 def test_sort_by_date_empty():
+
     assert sort_by_date([])
+
