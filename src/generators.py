@@ -72,10 +72,12 @@ def filter_by_currency(transactions: list[Any], currency: str) -> Any:
             yield i
 
 
-usd_transactions = filter_by_currency(transactions, "USD")
+if __name__ == "__main__":
 
-for _ in range(2):
-    print(next(usd_transactions)["id"])
+    usd_transactions = filter_by_currency(transactions, "USD")
+
+    for _ in range(3):
+        print(next(usd_transactions)["id"])
 
 
 def transaction_descriptions(transactions: list[Any]) -> Iterator[str]:
@@ -85,10 +87,12 @@ def transaction_descriptions(transactions: list[Any]) -> Iterator[str]:
         yield i["description"]
 
 
-descriptions = transaction_descriptions(transactions)
+if __name__ == "__main__":
 
-for _ in range(5):
-    print(next(descriptions))
+    descriptions = transaction_descriptions(transactions)
+
+    for _ in range(5):
+        print(next(descriptions))
 
 
 def card_number_generator(min, max):
@@ -111,5 +115,7 @@ def card_number_generator(min, max):
             min += 1
 
 
-for card_number in card_number_generator(1, 10):
-    print(card_number)
+if __name__ == "__main__":
+
+    for card_number in card_number_generator(1, 10):
+        print(card_number)

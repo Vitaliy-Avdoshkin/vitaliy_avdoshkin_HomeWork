@@ -11,19 +11,22 @@ def log(filename: Optional[str] = None) -> Any:
     def decorator(func: Any) -> Any:
         @wraps(func)
         def wrapper(*args: Any, **kwargs: Any) -> Any:
+
             try:
                 result = func(*args, **kwargs)
                 log_message = "my_function ok"
-
+                return result
             except Exception as e:
                 log_message = f"my_function error: {e}. Input:{args}, {kwargs}"
-            if filename:
-                with open(filename, "a", encoding="utf-8") as file:
-                    file.write(log_message + "\n")
-            else:
-                print(log_message)
+                raise e
 
-            return result
+            finally:
+                if filename:
+                    with open(filename, "a", encoding="utf-8") as file:
+                        file.write(log_message + "\n")
+
+                else:
+                    print(log_message)
 
         return wrapper
 
@@ -37,4 +40,4 @@ def my_function(x, y):
 
 
 if __name__ == "__main__":
-    print(my_function(1, "3"))
+    print(my_function(1, 3))
