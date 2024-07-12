@@ -1,5 +1,5 @@
 import os
-from typing import Any
+
 import requests
 from dotenv import load_dotenv
 
@@ -20,11 +20,11 @@ def transactions_amount(id_transaction: int) -> float:
 
     for transaction in transactions_info:
         currency = transaction["operationAmount"]["currency"].get("code")
-
+        amount = transaction["operationAmount"].get("amount")
         if transaction.get("id") == id_transaction:
 
             if currency == "RUB":
-                return float(transaction["operationAmount"].get("amount"))
+                return float(amount)
             else:
 
                 url = f"https://api.apilayer.com/exchangerates_data/latest?symbols=RUB&base={currency}"
@@ -35,11 +35,8 @@ def transactions_amount(id_transaction: int) -> float:
 
                 result = response.json()
 
-                return round(
-                    result["rates"].get("RUB")
-                    * float(transaction["operationAmount"].get("amount")),
-                    2,
-                )
+                return round(result["rates"].get("RUB") * float(amount), 2)
+    return amount
 
 
 print(transactions_amount(441945886))
