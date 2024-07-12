@@ -21,6 +21,7 @@ def transactions_amount(id_transaction: int) -> float:
     for transaction in transactions_info:
         currency = transaction["operationAmount"]["currency"].get("code")
         amount = transaction["operationAmount"].get("amount")
+
         if transaction.get("id") == id_transaction:
 
             if currency == "RUB":
