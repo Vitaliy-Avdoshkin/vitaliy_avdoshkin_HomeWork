@@ -1,6 +1,5 @@
 import os
 from typing import Any
-
 import requests
 from dotenv import load_dotenv
 
@@ -16,7 +15,8 @@ transactions_info = get_transactions_info(
 )
 
 
-def transactions_amount(id_transaction: int) -> Any:
+def transactions_amount(id_transaction: int) -> float:
+    """Функция принимает на вход id транзакции и возвращает сумму в РУБ. Курс валюты функция импортирует через API"""
 
     for transaction in transactions_info:
         currency = transaction["operationAmount"]["currency"].get("code")
@@ -24,20 +24,22 @@ def transactions_amount(id_transaction: int) -> Any:
         if transaction.get("id") == id_transaction:
 
             if currency == "RUB":
-                return transaction["operationAmount"].get("amount")
+                return float(transaction["operationAmount"].get("amount"))
             else:
 
                 url = f"https://api.apilayer.com/exchangerates_data/latest?symbols=RUB&base={currency}"
 
-                payload = {}
                 headers = {"apikey": API_KEY}
 
-                response = requests.get(url, headers=headers, data=payload)
+                response = requests.get(url, headers=headers)
 
-                # status_code = response.status_code
                 result = response.json()
 
-                return round(result['rates'].get('RUB') * float(transaction["operationAmount"].get("amount")), 2)
+                return round(
+                    result["rates"].get("RUB")
+                    * float(transaction["operationAmount"].get("amount")),
+                    2,
+                )
 
 
 print(transactions_amount(441945886))
