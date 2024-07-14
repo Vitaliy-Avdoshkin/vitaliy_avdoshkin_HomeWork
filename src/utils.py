@@ -14,5 +14,12 @@ def get_transactions_info(json_file: str) -> list[Any]:
 
 
 print(
-    get_transactions_info(r"D:\PYTHON\vitaliy_avdoshkin_HomeWork\data\operations.json")
+    json.dumps(
+        get_transactions_info(
+            r"D:\PYTHON\vitaliy_avdoshkin_HomeWork\data\operations.json"
+        ),
+        indent=4,
+    )
 )
+
+#print(get_transactions_info(r"D:\PYTHON\vitaliy_avdoshkin_HomeWork\data\operations.json"))
