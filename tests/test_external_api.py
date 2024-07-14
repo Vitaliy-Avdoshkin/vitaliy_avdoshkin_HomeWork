@@ -1,6 +1,6 @@
 from unittest.mock import patch
 
-from src.external_api import transactions_amount, transaction
+from src.external_api import transaction, transactions_amount
 
 
 @patch("requests.get")
