@@ -37,6 +37,7 @@ def transactions_amount(id_transaction: int) -> float:
                 result = response.json()
 
                 return round(result["rates"].get("RUB") * float(amount), 2)
+
     return amount
 
 

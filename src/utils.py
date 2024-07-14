@@ -22,4 +22,4 @@ print(
     )
 )
 
-#print(get_transactions_info(r"D:\PYTHON\vitaliy_avdoshkin_HomeWork\data\operations.json"))
+# print(get_transactions_info(r"D:\PYTHON\vitaliy_avdoshkin_HomeWork\data\operations.json"))
