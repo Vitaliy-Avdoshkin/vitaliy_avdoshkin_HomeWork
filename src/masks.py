@@ -1,11 +1,13 @@
 import logging
+import os
+
+rel_file_path = "masks.log"
+abs_file_path = os.path.abspath(rel_file_path)
 
 # Добавляем логгер, который записывает логи в файл.
 logger = logging.getLogger("masks")
 logger.setLevel(logging.INFO)
-file_handler = logging.FileHandler(
-    "../logs/masks.log", "w", encoding="utf-8"
-)
+file_handler = logging.FileHandler(abs_file_path, "w", encoding="utf-8")
 file_formatter = logging.Formatter(
     "%(asctime)s - %(name)s - %(levelname)s: %(message)s"
 )

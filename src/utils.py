@@ -1,13 +1,18 @@
 import json
 import logging
+import os
 from typing import Any
+
+rel_log_file_path = "utils.log"
+abs_log_file_path = os.path.abspath(rel_log_file_path)
+
+rel_src_file_path = "../data/operations.json"
+abs_src_file_path = os.path.abspath(rel_src_file_path)
 
 # Добавляем логгер, который записывает логи в файл.
 logger = logging.getLogger("utils")
 logger.setLevel(logging.INFO)
-file_handler = logging.FileHandler(
-    "../logs/utils.log", "w", encoding="utf-8"
-)
+file_handler = logging.FileHandler(abs_log_file_path, "w", encoding="utf-8")
 file_formatter = logging.Formatter(
     "%(asctime)s - %(name)s - %(levelname)s: %(message)s"
 )
@@ -15,7 +20,7 @@ file_handler.setFormatter(file_formatter)
 logger.addHandler(file_handler)
 
 
-def get_transactions_info(json_file: str) -> list[Any]:
+def get_transactions_info_json(json_file: str) -> list[Any]:
     """Функция принимает на вход путь до JSON-файла и возвращает список словарей"""
 
     with open(json_file, "r", encoding="utf-8") as file:
@@ -30,11 +35,7 @@ def get_transactions_info(json_file: str) -> list[Any]:
 
 print(
     json.dumps(
-        get_transactions_info(
-            r"D:\PYTHON\vitaliy_avdoshkin_HomeWork\data\operations.json"
-        ),
+        get_transactions_info_json(abs_src_file_path),
         indent=4,
     )
 )
-
-# print(get_transactions_info(r"D:\PYTHON\vitaliy_avdoshkin_HomeWork\data\operations.json"))
