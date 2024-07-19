@@ -1,7 +1,7 @@
 import logging
 import os
 
-rel_file_path = "masks.log"
+rel_file_path = "../logs/masks.log"
 abs_file_path = os.path.abspath(rel_file_path)
 
 # Добавляем логгер, который записывает логи в файл.

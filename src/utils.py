@@ -3,7 +3,7 @@ import logging
 import os
 from typing import Any
 
-rel_log_file_path = "utils.log"
+rel_log_file_path = "../logs/utils.log"
 abs_log_file_path = os.path.abspath(rel_log_file_path)
 
 rel_src_file_path = "../data/operations.json"
