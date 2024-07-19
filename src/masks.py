@@ -1,10 +1,10 @@
 import logging
 
 # Добавляем логгер, который записывает логи в файл.
-logger = logging.getLogger("main")
+logger = logging.getLogger("masks")
 logger.setLevel(logging.INFO)
 file_handler = logging.FileHandler(
-    r"D:\PYTHON\vitaliy_avdoshkin_HomeWork\logs\main.log", encoding="utf-8"
+    "../logs\\masks.log", encoding="utf-8"
 )
 file_formatter = logging.Formatter(
     "%(asctime)s - %(name)s - %(levelname)s: %(message)s"
