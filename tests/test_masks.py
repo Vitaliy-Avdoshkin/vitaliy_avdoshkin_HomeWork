@@ -9,3 +9,9 @@ def test_get_mask_card_number():
 def test_get_mask_account():
     assert get_mask_account("73654108430135874305") == "**4305"
     assert get_mask_account("786541084301358743") == "Неверный формат номера счета"
+
+
+@mock.patch(logging)
+    def test_get_mask_card_number("7000792289606361", mock_logger):
+        mock_logger.info.assert_called_with("2024-07-19 12:12:57,603 - masks - INFO: Формат карты верный")
+
