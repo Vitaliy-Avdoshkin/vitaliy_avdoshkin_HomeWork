@@ -1,7 +1,11 @@
 import logging
 import os
 
-rel_file_path = "../logs/masks.log"
+# Получаем абсолютный путь до текущей директории
+current_dir = os.path.dirname(os.path.abspath(__file__))
+
+# Создаем путь до файла логов относительно текущей директории
+rel_file_path = os.path.join(current_dir, "../logs/masks.log")
 abs_file_path = os.path.abspath(rel_file_path)
 
 # Добавляем логгер, который записывает логи в файл.

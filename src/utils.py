@@ -3,10 +3,15 @@ import logging
 import os
 from typing import Any
 
-rel_log_file_path = "../logs/utils.log"
+# Получаем абсолютный путь до текущей директории
+current_dir = os.path.dirname(os.path.abspath(__file__))
+
+# Создаем путь до файла логов относительно текущей директории
+rel_log_file_path = os.path.join(current_dir, "../logs/utils.log")
 abs_log_file_path = os.path.abspath(rel_log_file_path)
 
-rel_src_file_path = "../data/operations.json"
+# Создаем путь до файла JSON относительно текущей директории
+rel_src_file_path = os.path.join(current_dir, "../data/operations.json")
 abs_src_file_path = os.path.abspath(rel_src_file_path)
 
 # Добавляем логгер, который записывает логи в файл.
