@@ -30,6 +30,10 @@ poetry add --group lint mypy
 2. Используйте код из модуля widget для получения масок номера счета и номера банковской карты вместе и даты операции.
 3. Используйте код из модуля processing для получения информации по операциям.
 4. Используйте код из модуля generators для фильтрации информации по операциям.
+5. Используйте код из модуля decorators для создания декоратора, который проводит логирование вызовов функции.
+   Логирует вызов функции и её результат в файл или консоль.
+6. Используйте код из модуля external_api для импорта курса валют через API
+7. Используйте код из модуля utils для импорта из файла JSON информации по ранзакциям.
 
 ## Примеры работы программы
 
@@ -42,6 +46,21 @@ poetry add --group lint mypy
 Пример работы функции, возвращающей маску счета
 73654108430135874305  # входной аргумент
 **4305  # выход функции
+
+В модуль добавлен логгер, который записывает логи в файл.
+
+```
+logger = logging.getLogger("masks")
+logger.setLevel(logging.INFO)
+file_handler = logging.FileHandler(
+    "../logs/masks.log", encoding="utf-8"
+)
+file_formatter = logging.Formatter(
+    "%(asctime)s - %(name)s - %(levelname)s: %(message)s"
+)
+file_handler.setFormatter(file_formatter)
+logger.addHandler(file_handler)
+```
 
 # Модуль widget.py
 
@@ -198,7 +217,7 @@ for _ in range(2):
 
 2. Генератор, который принимает список словарей
 и возвращает описание каждой операции по очереди.
-3. 
+ 
 Пример вызова функции:
 ```
 descriptions = transaction_descriptions(transactions)
@@ -235,10 +254,35 @@ for card_number in card_number_generator(1, 5):
 0000 0000 0000 0005
 ```
 
+# Модуль utils
+Функция get_transactions_info принимает на вход путь до JSON-файла с информацией о проводимых транзакциях.
+И возвращает список словарей.
+
+В модуль добавлен логгер, который записывает логи в файл.
+
+```
+logger = logging.getLogger("utils")
+logger.setLevel(logging.INFO)
+file_handler = logging.FileHandler(
+    "../logs/utils.log", encoding="utf-8"
+)
+file_formatter = logging.Formatter(
+    "%(asctime)s - %(name)s - %(levelname)s: %(message)s"
+)
+file_handler.setFormatter(file_formatter)
+logger.addHandler(file_handler)
+```
+
 # Модуль decorators
 
-Содержит декораторы для функции сложения числе - my_function
+Содержит декоратор для логирования вызовов функции сложения числе - my_function.
+Логирует вызов функции и её результат в файл или консоль.
+Принимает необязательный аргумент filename для указания файла логирования.
 
+
+# Модуль external_api
+Содержит функцию transactions_amount, которая принимает на вход транзакцию  и возвращает сумму в РУБ. 
+Курс валюты функция импортирует через API с сайта https://api.apilayer.com
 
 ## Тестирование
 

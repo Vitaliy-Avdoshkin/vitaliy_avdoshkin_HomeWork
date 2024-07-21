@@ -1,3 +1,4 @@
+import os
 from functools import wraps
 from typing import Any, Optional
 
@@ -33,7 +34,16 @@ def log(filename: Optional[str] = None) -> Any:
     return decorator
 
 
-@log(filename="mylog.txt")
+# Получаем абсолютный путь до текущей директории
+current_dir = os.path.dirname(os.path.abspath(__file__))
+
+# Создаем путь до файла "mylog.txt" относительно текущей директории
+rel_mylog_path = os.path.join(current_dir, "../logs/mylog.txt")
+abs_mylog_path = os.path.abspath(rel_mylog_path)
+mylog = abs_mylog_path
+
+
+@log(filename=mylog)
 def my_function(x, y):
     """Функция сложения чисел"""
     return x + y
