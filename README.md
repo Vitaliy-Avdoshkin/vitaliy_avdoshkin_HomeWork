@@ -33,7 +33,7 @@ poetry add --group lint mypy
 5. Используйте код из модуля decorators для создания декоратора, который проводит логирование вызовов функции.
    Логирует вызов функции и её результат в файл или консоль.
 6. Используйте код из модуля external_api для импорта курса валют через API
-7. Используйте код из модуля utils для импорта из файла JSON информации по ранзакциям.
+7. Используйте код из модуля utils для импорта из информации по транзакциям из следующих источников: файл JSON, файл CSV, файл XLSX.
 
 ## Примеры работы программы
 
@@ -255,8 +255,33 @@ for card_number in card_number_generator(1, 5):
 ```
 
 # Модуль utils
-Функция get_transactions_info принимает на вход путь до JSON-файла с информацией о проводимых транзакциях.
+Функция get_transactions_info_json принимает на вход путь до JSON-файла с информацией о проводимых транзакциях.
 И возвращает список словарей.
+
+Функция get_transactions_info_csv принимает на вход путь до CSV-файла с информацией о проводимых транзакциях.
+И возвращает список словарей.
+
+Функция get_transactions_info_xlsx принимает на вход путь до XLSX-файла с информацией о проводимых транзакциях.
+И возвращает список словарей.
+
+Формат списка словарей одинаков для всех трех функций.
+Пример ниже
+
+```commandline
+{
+    "id": 41428829,
+    "state": "EXECUTED",
+    "date": "2019-07-03T18:35:29.512364",
+    "operationAmount": {
+        "amount": "8221.37",
+        "currency": {"name": "USD", "code": "USD"},
+    },
+    "description": "\u041f\u0435\u0440\u0435\u0432\u043e\u0434"
+    " \u043e\u0440\u0433\u0430\u043d\u0438\u0437\u0430\u0446\u0438\u0438",
+    "from": "MasterCard 7158300734726758",
+    "to": "\u0421\u0447\u0435\u0442 35383033474447895560",
+}
+```
 
 В модуль добавлен логгер, который записывает логи в файл.
 
@@ -272,7 +297,27 @@ file_formatter = logging.Formatter(
 file_handler.setFormatter(file_formatter)
 logger.addHandler(file_handler)
 ```
+Для избежания проблем с путями к файлам использунтся следующий код
+```commandline
+# Получаем абсолютный путь до текущей директории
+current_dir = os.path.dirname(os.path.abspath(__file__))
 
+# Создаем путь до файла логов относительно текущей директории
+rel_log_file_path = os.path.join(current_dir, "../logs/utils.log")
+abs_log_file_path = os.path.abspath(rel_log_file_path)
+
+# Создаем путь до файла JSON относительно текущей директории
+rel_json_path = os.path.join(current_dir, "../data/operations.json")
+abs_json_path = os.path.abspath(rel_json_path)
+
+# Создаем путь до файла csv относительно текущей директории
+rel_csv_path = os.path.join(current_dir, "../data/transactions.csv")
+abs_csv_path = os.path.abspath(rel_csv_path)
+
+# Создаем путь до файла xlsx относительно текущей директории
+rel_xlsx_path = os.path.join(current_dir, "../data/transactions_excel.xlsx")
+abs_xlsx_path = os.path.abspath(rel_xlsx_path)
+```
 # Модуль decorators
 
 Содержит декоратор для логирования вызовов функции сложения числе - my_function.
