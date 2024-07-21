@@ -282,6 +282,15 @@ for card_number in card_number_generator(1, 5):
     "to": "\u0421\u0447\u0435\u0442 35383033474447895560",
 }
 ```
+Для использования библиотеки pandas, ее необходимо установить, используя следующую команду:
+
+```commandline
+poetry add pandas
+```
+Для корректной работы с Excel-файлами в pandas необходимо дополнительно установить библиотеку openpyxl
+```commandline
+poetry add openpyxl
+```
 
 В модуль добавлен логгер, который записывает логи в файл.
 
@@ -298,6 +307,7 @@ file_handler.setFormatter(file_formatter)
 logger.addHandler(file_handler)
 ```
 Для избежания проблем с путями к файлам использунтся следующий код
+
 ```commandline
 # Получаем абсолютный путь до текущей директории
 current_dir = os.path.dirname(os.path.abspath(__file__))
