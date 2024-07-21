@@ -11,6 +11,16 @@ def test_get_mask_account():
     assert get_mask_account("786541084301358743") == "Неверный формат номера счета"
 
 
-# @mock.patch(logging)
-#     def test_get_mask_card_number("7000792289606361", mock_logger):
-#         mock_logger.info.assert_called_with("2024-07-19 12:12:57,603 - masks - INFO: Формат карты верный")
+import pytest
+
+@pytest.mark.parametrize("x", [(7000792289606361), (8000522289606361),(700792289606361), ()])
+def test_get_mask_card_number(x):
+    card_number_str = str(x)
+    assert f"{card_number_str[:4]} {card_number_str[4:6]}** **** {card_number_str[-4:]}"
+
+
+@pytest.mark.parametrize("x", [(73654108430135874305), (773654108430135874305), (3373654108430135874305), ()])
+def test_get_mask_account(x):
+    account_number_str = str(x)
+    assert f"**{account_number_str[-4:]}"
+    
