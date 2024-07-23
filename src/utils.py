@@ -44,7 +44,7 @@ def get_transactions_info_json(json_file: str) -> list[Any]:
             logger.info("Путь до файла json верный")
             transactions_info = json.load(file)
             return transactions_info
-        except:
+        except Exception:
             logger.warning("Импортируемый список пуст или отсутствует.")
             return []
 
@@ -61,15 +61,15 @@ def get_transactions_info_csv(input_csv_file: str) -> list[Any]:
     """Функция принимает на вход путь до файла csv и возвращает список словарей"""
     with open(input_csv_file, newline="", encoding="utf-8") as csv_file:
         result_csv = []
-        dict_csv = {}
+        dicts_csv = {}
         try:
             logger.info("Путь до файла csv верный")
             reader_csv = csv.DictReader(csv_file, delimiter=";")
             for row in reader_csv:
-                dict_csv["id"] = row["id"]
-                dict_csv["state"] = row["state"]
-                dict_csv["date"] = row["date"]
-                dict_csv.update(
+                dicts_csv["id"] = row["id"]
+                dicts_csv["state"] = row["state"]
+                dicts_csv["date"] = row["date"]
+                dicts_csv.update(
                     {
                         "operationAmount": {
                             "amount": row["amount"],
@@ -80,12 +80,12 @@ def get_transactions_info_csv(input_csv_file: str) -> list[Any]:
                         }
                     }
                 )
-                dict_csv["description"] = row["description"]
-                dict_csv["from"] = row["from"]
-                dict_csv["to"] = row["to"]
-                result_csv.append(dict_csv)
+                dicts_csv["description"] = row["description"]
+                dicts_csv["from"] = row["from"]
+                dicts_csv["to"] = row["to"]
+                result_csv.append(dicts_csv)
             return result_csv
-        except:
+        except Exception:
             logger.warning("Импортируемый список пуст или отсутствует.")
             return []
 
@@ -103,7 +103,7 @@ def get_transactions_info_xlsx(input_xlsx_file: str) -> list[Any]:
 
     df = pd.read_excel(abs_xlsx_path)
     result_xlsx = []
-    dict_xlsx = {}
+    dicts_xlsx = {}
 
     try:
         logger.info("Путь до файла csv верный")
@@ -112,10 +112,10 @@ def get_transactions_info_xlsx(input_xlsx_file: str) -> list[Any]:
         df_dict = df.to_dict("records")
 
         for i in df_dict:
-            dict_xlsx["id"] = i["id"]
-            dict_xlsx["state"] = i["state"]
-            dict_xlsx["date"] = i["date"]
-            dict_xlsx.update(
+            dicts_xlsx["id"] = i["id"]
+            dicts_xlsx["state"] = i["state"]
+            dicts_xlsx["date"] = i["date"]
+            dicts_xlsx.update(
                 {
                     "operationAmount": {
                         "amount": i["amount"],
@@ -126,12 +126,12 @@ def get_transactions_info_xlsx(input_xlsx_file: str) -> list[Any]:
                     }
                 }
             )
-            dict_xlsx["description"] = i["description"]
-            dict_xlsx["from"] = i["from"]
-            dict_xlsx["to"] = i["to"]
-            result_xlsx.append(dict_xlsx)
+            dicts_xlsx["description"] = i["description"]
+            dicts_xlsx["from"] = i["from"]
+            dicts_xlsx["to"] = i["to"]
+            result_xlsx.append(dicts_xlsx)
         return result_xlsx
-    except:
+    except Exception:
         logger.warning("Импортируемый список пуст или отсутствует.")
         return []
 
