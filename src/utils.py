@@ -159,14 +159,14 @@ def categories_counter(input_list: list[Any], categories_list: list[Any]) -> dic
     return count
 
 
-print(
-    categories_counter(
-        get_transactions_info_csv(abs_csv_path),
-        [
-            "Перевод организации",
-            "Перевод с карты на карту",
-            "Открытие вклада",
-            "Перевод со счета на счет",
-        ],
-    )
-)
+# print(
+#     categories_counter(
+#         get_transactions_info_csv(abs_csv_path),
+#         [
+#             "Перевод организации",
+#             "Перевод с карты на карту",
+#             "Открытие вклада",
+#             "Перевод со счета на счет",
+#         ],
+#     )
+# )
