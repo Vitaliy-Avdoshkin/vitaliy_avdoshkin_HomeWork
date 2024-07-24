@@ -3,6 +3,10 @@ from src.utils import (
     get_transactions_info_csv,
     get_transactions_info_xlsx,
 )
+from src.processing import (
+    filter_by_state,
+    sort_by_date,
+)
 import csv
 import json
 import logging
@@ -46,26 +50,39 @@ def main():
     )
     if input_src == 1:
         print("Для обработки выбран JSON-файл.")
-        get_transactions_info_json(abs_json_path)
+        result = get_transactions_info_json(abs_json_path)
     if input_src == 2:
         print("Для обработки выбран CSV-файл.")
-        get_transactions_info_csv(abs_csv_path)
+        result = get_transactions_info_csv(abs_csv_path)
     if input_src == 3:
         print("Для обработки выбран XLSX-файл.")
-        get_transactions_info_xlsx(abs_xlsx_path)
+        result = get_transactions_info_xlsx(abs_xlsx_path)
 
-    input_status = str(
+    input_state = str(
         input(
             """Введите статус, по которому необходимо выполнить фильтрацию. 
 Доступные для фильтровки статусы: EXECUTED, CANCELED, PENDING"""
-        )
+        ).upper()
     )
+    while input_state not in ["EXECUTED", "CANCELED", "PENDING"]:
+        print(f"Статус операции {input_state} недоступен.")
+        input_state = str(
+            input(
+                """Введите статус, по которому необходимо выполнить фильтрацию. 
+Доступные для фильтровки статусы: EXECUTED, CANCELED, PENDING"""
+            ).upper()
+        )
+    else:
+        filter_by_state(result, input_state)
+        print(f"Операции отфильтрованы по статусу {input_state}")
     input_date_sort = str(input("Отсортировать операции по дате? Да/Нет"))
     input_ascending = str(input("Отсортировать по возрастанию или убыванию?"))
     input_currency = str(input("Выводить только рублевые транзакции? Да/Нет"))
-    input_word_filter = str(input("Отфильтровать список транзакций по определенному слову в описании? Да/Нет"))
-
-
+    input_word_filter = str(
+        input(
+            "Отфильтровать список транзакций по определенному слову в описании? Да/Нет"
+        )
+    )
 
 
 main()
