@@ -32,7 +32,7 @@ def get_mask_card_number(card_number: str) -> str:
         return "Неверный формат банковской карты"
 
 
-print(get_mask_card_number("7000792289606361"))
+#print(get_mask_card_number("7000792289606361"))
 
 
 def get_mask_account(accound_number: str) -> str:
@@ -48,4 +48,4 @@ def get_mask_account(accound_number: str) -> str:
         return "Неверный формат номера счета"
 
 
-print(get_mask_account("73654108430135874305"))
+#print(get_mask_account("73654108430135874305"))

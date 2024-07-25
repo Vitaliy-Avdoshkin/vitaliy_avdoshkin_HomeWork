@@ -16,6 +16,8 @@ from src.utils import (
     filter_by_currency,
     filter_by_description,
 )
+from src.widget import get_data
+from src.masks import get_mask_card_number, get_mask_account
 
 # Получаем абсолютный путь до текущей директории
 current_dir = os.path.dirname(os.path.abspath(__file__))
@@ -129,7 +131,27 @@ def main():
             description_filter
         else:
             description_filter = currency_filter
+
     print("Распечатываю итоговый список транзакций...")
-    print(description_filter)
+    print(f"Всего банковских операций в выборке: {len(description_filter)}")
+    print(" ")
+
+    for i in description_filter:
+        print(f"{get_data(str(i['date']))} {str(i['description'])}")
+        if i['description'] == 'Открытие вклада':
+            print(f"Счет {get_mask_account(i['to'])}")
+            print(f'Сумма: {i["operationAmount"].get('amount')}')
+            print(' ')
+        if i['description'] == 'Перевод организации':
+            print(f"{get_mask_card_number(str(i['from']))} -> {get_mask_account(str(i['to']))}")
+            print(' ')
+        if i['description'] == 'Перевод с карты на карту':
+            print(f"{get_mask_card_number(str(i['from']))} -> {get_mask_card_number(str(i['to']))}")
+            print(' ')
+        if i['description'] == 'Перевод со счета на счет':
+            print(f"{get_mask_account(str(i['from']))} -> {get_mask_account(str(i['to']))}")
+            print(' ')
 
 main()
+
+#Перевод организации', 'Перевод с карты на карту', 'Открытие вклада', 'Перевод со счета на счет'}
