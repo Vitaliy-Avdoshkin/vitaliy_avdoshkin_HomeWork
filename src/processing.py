@@ -7,10 +7,10 @@ def filter_by_state(input_list: list[Any], state="EXECUTED") -> Any:
     filtered_list = []
     if len(input_list) > 0:
         for element in input_list:
-            if element["state"] == state:
+            if element.get("state") == state:
                 filtered_list.append(element)
 
-            return filtered_list
+        return filtered_list
     else:
         return "Список пуст"
 

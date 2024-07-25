@@ -44,6 +44,7 @@ def get_transactions_info_json(json_file: str) -> list[Any]:
     with open(json_file, "r", encoding="utf-8") as file:
         try:
             logger.info("Путь до файла json верный")
+            # transactions_info = list(json.load(file))
             transactions_info = json.load(file)
             return transactions_info
         except Exception:
@@ -170,3 +171,22 @@ def categories_counter(input_list: list[Any], categories_list: list[Any]) -> dic
 #         ],
 #     )
 # )
+
+
+def filter_by_currency(input_list: list[Any], currency_string: str) -> list[Any]:
+
+    pattern = re.compile(currency_string, re.IGNORECASE)
+    filtered_currency_lists = []
+    for i in input_list:
+        if 'operationAmount' in i:
+            # i.get("description") == str(i.get("description"))
+            match = pattern.search(str(i.get("operationAmount")["currency"]["code"]))
+            if match:
+                filtered_currency_lists.append(i)
+
+    return filtered_currency_lists
+
+
+#print(filter_by_currency(get_transactions_info_json(abs_json_path), 'RUB'))
+# print(filter_by_currency(get_transactions_info_csv(abs_csv_path), 'RUB'))
+# print(filter_by_currency(get_transactions_info_xlsx(abs_xlsx_path), 'RUB'))
