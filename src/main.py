@@ -94,24 +94,20 @@ def main():
         input_date_sort = str(input("Отсортировать операции по дате? Да/Нет").title())
     else:
         if input_date_sort == "Да":
-            date_sort = sort_by_date(state_filter)
-        else:
-            pass
-    date_sort
+            input_ascending = str(input("Отсортировать по возрастанию или убыванию?").lower())
+            while input_ascending not in ["по возрастанию", "по убыванию"]:
+                input_ascending = str(input("Отсортировать по возрастанию или убыванию?").lower())
+            else:
+                if input_ascending == "по возрастанию":
+                    date_sort = sort_by_date(state_filter, descending=False)
+                    date_sort
+                else:
+                    date_sort = sort_by_date(state_filter, descending=True)
+                    date_sort
 
-    input_ascending = str(input("Отсортировать по возрастанию или убыванию?").lower())
-    while input_ascending not in ["по возрастанию", "по убыванию"]:
-        input_ascending = str(
-            input("Отсортировать по возрастанию или убыванию?").lower()
-        )
-    else:
-        if input_ascending == "по возрастанию":
-            date_sort = sort_by_date(state_filter, descending=False)
-            date_sort
         else:
-            date_sort = sort_by_date(state_filter, descending=True)
-            date_sort
-    date_sort
+            date_sort = state_filter
+
 
     input_currency = str(input("Выводить только рублевые транзакции? Да/Нет").title())
     while input_currency not in ["Да", "Нет"]:
@@ -119,7 +115,9 @@ def main():
     else:
         if input_currency == 'Да':
             currency_filter = filter_by_currency(date_sort, 'RUB')
-    currency_filter
+
+        else:
+            currency_filter = date_sort
 
     input_word_filter = str(input("Отфильтровать список транзакций по определенному слову в описании? Да/Нет").title())
     while input_word_filter not in ["Да", "Нет"]:
@@ -129,7 +127,8 @@ def main():
             input_filter_word = str(input("Пожалуйста, укажите слово, по которому будет проводиться филтьрация"))
             description_filter = filter_by_description(currency_filter, input_filter_word)
             description_filter
-
+        else:
+            description_filter = currency_filter
     print("Распечатываю итоговый список транзакций...")
     print(description_filter)
 
