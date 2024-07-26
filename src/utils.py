@@ -135,7 +135,8 @@ def get_transactions_info_xlsx(input_xlsx_file: str) -> list[Any]:
 
 def filter_by_description(input_list: list[Any], search_string: str) -> list[Any]:
     """Функция принимает на вход список словарей
-    и возвращает список словарей, отфильтрованный по заданном слову в описании транзакций"""
+    и возвращает список словарей, отфильтрованный по заданном слову в описании транзакций
+    """
     pattern = re.compile(search_string, re.IGNORECASE)
     filtered_lists = []
     for i in input_list:
@@ -154,7 +155,7 @@ def filter_by_description(input_list: list[Any], search_string: str) -> list[Any
 
 def categories_counter(input_list: list[Any], categories_list: list[Any]) -> dict:
     """Функция принимает на вход исходный список словарей
-        и список категорий и возвращает словарь с количеством операций в каждой категории"""
+    и список категорий и возвращает словарь с количеством операций в каждой категории"""
     result = []
     for i in input_list:
         if i.get("description") in categories_list:
@@ -178,11 +179,11 @@ def categories_counter(input_list: list[Any], categories_list: list[Any]) -> dic
 
 def filter_by_currency(input_list: list[Any], currency_string: str) -> list[Any]:
     """Функция принимает на вход список словарей
-        и возвращает список словарей, отфильтрованный по заданной валюте"""
+    и возвращает список словарей, отфильтрованный по заданной валюте"""
     pattern = re.compile(currency_string, re.IGNORECASE)
     filtered_currency_lists = []
     for i in input_list:
-        if 'operationAmount' in i:
+        if "operationAmount" in i:
             # i.get("description") == str(i.get("description"))
             match = pattern.search(str(i.get("operationAmount")["currency"]["code"]))
             if match:
@@ -191,6 +192,6 @@ def filter_by_currency(input_list: list[Any], currency_string: str) -> list[Any]
     return filtered_currency_lists
 
 
-#print(filter_by_currency(get_transactions_info_json(abs_json_path), 'RUB'))
+# print(filter_by_currency(get_transactions_info_json(abs_json_path), 'RUB'))
 # print(filter_by_currency(get_transactions_info_csv(abs_csv_path), 'RUB'))
 # print(filter_by_currency(get_transactions_info_xlsx(abs_xlsx_path), 'RUB'))

@@ -1,23 +1,14 @@
-import csv
-import json
-import logging
 import os
-import re
-from collections import Counter
-from typing import Any
-
-import pandas as pd
 
 from src.processing import filter_by_state, sort_by_date
 from src.utils import (
+    filter_by_currency,
+    filter_by_description,
     get_transactions_info_csv,
     get_transactions_info_json,
     get_transactions_info_xlsx,
-    filter_by_currency,
-    filter_by_description,
 )
-from src.widget import get_data
-from src.masks import get_mask_card_number, get_mask_account
+from src.widget import get_data, mask_account_card
 
 # Получаем абсолютный путь до текущей директории
 current_dir = os.path.dirname(os.path.abspath(__file__))
@@ -42,9 +33,8 @@ abs_xlsx_path = os.path.abspath(rel_xlsx_path)
 def main():
     input_src = int(
         input(
-            """Привет! Добро пожаловать в программу работы 
-    с банковскими транзакциями. 
-    Выберите необходимый пункт меню:
+            """Привет! Добро пожаловать в программу работыс банковскими транзакциями.
+            Выберите необходимый пункт меню:
     1. Получить информацию о транзакциях из JSON-файла
     2. Получить информацию о транзакциях из CSV-файла
     3. Получить информацию о транзакциях из XLSX-файла"""
@@ -74,7 +64,7 @@ def main():
 
     input_state = str(
         input(
-            """Введите статус, по которому необходимо выполнить фильтрацию. 
+            """Введите статус, по которому необходимо выполнить фильтрацию.
 Доступные для фильтровки статусы: EXECUTED, CANCELED, PENDING"""
         ).upper()
     )
@@ -82,7 +72,7 @@ def main():
         print(f"Статус операции {input_state} недоступен.")
         input_state = str(
             input(
-                """Введите статус, по которому необходимо выполнить фильтрацию. 
+                """Введите статус, по которому необходимо выполнить фильтрацию.
 Доступные для фильтровки статусы: EXECUTED, CANCELED, PENDING"""
             ).upper()
         )
@@ -96,9 +86,13 @@ def main():
         input_date_sort = str(input("Отсортировать операции по дате? Да/Нет").title())
     else:
         if input_date_sort == "Да":
-            input_ascending = str(input("Отсортировать по возрастанию или убыванию?").lower())
+            input_ascending = str(
+                input("Отсортировать по возрастанию или убыванию?").lower()
+            )
             while input_ascending not in ["по возрастанию", "по убыванию"]:
-                input_ascending = str(input("Отсортировать по возрастанию или убыванию?").lower())
+                input_ascending = str(
+                    input("Отсортировать по возрастанию или убыванию?").lower()
+                )
             else:
                 if input_ascending == "по возрастанию":
                     date_sort = sort_by_date(state_filter, descending=False)
@@ -110,48 +104,75 @@ def main():
         else:
             date_sort = state_filter
 
-
     input_currency = str(input("Выводить только рублевые транзакции? Да/Нет").title())
     while input_currency not in ["Да", "Нет"]:
-        input_currency = str(input("Выводить только рублевые транзакции? Да/Нет").title())
+        input_currency = str(
+            input("Выводить только рублевые транзакции? Да/Нет").title()
+        )
     else:
-        if input_currency == 'Да':
-            currency_filter = filter_by_currency(date_sort, 'RUB')
+        if input_currency == "Да":
+            currency_filter = filter_by_currency(date_sort, "RUB")
 
         else:
             currency_filter = date_sort
 
-    input_word_filter = str(input("Отфильтровать список транзакций по определенному слову в описании? Да/Нет").title())
+    input_word_filter = str(
+        input(
+            "Отфильтровать список транзакций по определенному слову в описании? Да/Нет"
+        ).title()
+    )
     while input_word_filter not in ["Да", "Нет"]:
-        input_word_filter = str(input("Отфильтровать список транзакций по определенному слову в описании? Да/Нет").title())
+        input_word_filter = str(
+            input(
+                "Отфильтровать список транзакций по определенному слову в описании? Да/Нет"
+            ).title()
+        )
     else:
-        if input_word_filter == 'Да':
-            input_filter_word = str(input("Пожалуйста, укажите слово, по которому будет проводиться филтьрация"))
-            description_filter = filter_by_description(currency_filter, input_filter_word)
+        if input_word_filter == "Да":
+            input_filter_word = str(
+                input(
+                    "Пожалуйста, укажите слово, по которому будет проводиться фильтрация"
+                )
+            )
+            description_filter = filter_by_description(
+                currency_filter, input_filter_word
+            )
             description_filter
         else:
             description_filter = currency_filter
-
-    print("Распечатываю итоговый список транзакций...")
-    print(f"Всего банковских операций в выборке: {len(description_filter)}")
     print(" ")
+    print("Распечатываю итоговый список транзакций...")
+    print(" ")
+    if len(description_filter) == 0:
+        print("Не найдено ни одной транзакции, подходящей под ваши условия фильтрации")
+    else:
+        print(f"Всего банковских операций в выборке: {len(description_filter)}")
+        print(" ")
 
-    for i in description_filter:
-        print(f"{get_data(str(i['date']))} {str(i['description'])}")
-        if i['description'] == 'Открытие вклада':
-            print(f"Счет {get_mask_account(i['to'])}")
-            print(f'Сумма: {i["operationAmount"].get('amount')}')
-            print(' ')
-        if i['description'] == 'Перевод организации':
-            print(f"{get_mask_card_number(str(i['from']))} -> {get_mask_account(str(i['to']))}")
-            print(' ')
-        if i['description'] == 'Перевод с карты на карту':
-            print(f"{get_mask_card_number(str(i['from']))} -> {get_mask_card_number(str(i['to']))}")
-            print(' ')
-        if i['description'] == 'Перевод со счета на счет':
-            print(f"{get_mask_account(str(i['from']))} -> {get_mask_account(str(i['to']))}")
-            print(' ')
+        for i in description_filter:
+            print(f"{get_data(i['date'])} {str(i['description'])}")
+            if i["description"] == "Открытие вклада":
+                print(f"Счет {mask_account_card(i['to'])}")
+                print(f'Сумма: {i["operationAmount"].get('amount')}')
+                print(" ")
+            if i["description"] == "Перевод организации":
+                print(
+                    f"{mask_account_card(str(i['from']))} -> {mask_account_card(str(i['to']))}"
+                )
+                print(f'Сумма: {i["operationAmount"].get('amount')}')
+                print(" ")
+            if i["description"] == "Перевод с карты на карту":
+                print(
+                    f"{mask_account_card(str(i['from']))} -> {mask_account_card(str(i['to']))}"
+                )
+                print(f'Сумма: {i["operationAmount"].get('amount')}')
+                print(" ")
+            if i["description"] == "Перевод со счета на счет":
+                print(
+                    f"{mask_account_card(str(i['from']))} -> {mask_account_card(str(i['to']))}"
+                )
+                print(f'Сумма: {i["operationAmount"].get('amount')}')
+                print(" ")
+
 
 main()
-
-#Перевод организации', 'Перевод с карты на карту', 'Открытие вклада', 'Перевод со счета на счет'}
