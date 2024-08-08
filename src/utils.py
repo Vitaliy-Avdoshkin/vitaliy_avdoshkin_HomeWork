@@ -2,6 +2,8 @@ import csv
 import json
 import logging
 import os
+import re
+from collections import Counter
 from typing import Any
 
 import pandas as pd
@@ -42,6 +44,7 @@ def get_transactions_info_json(json_file: str) -> list[Any]:
     with open(json_file, "r", encoding="utf-8") as file:
         try:
             logger.info("Путь до файла json верный")
+            # transactions_info = list(json.load(file))
             transactions_info = json.load(file)
             return transactions_info
         except Exception:
@@ -49,23 +52,19 @@ def get_transactions_info_json(json_file: str) -> list[Any]:
             return []
 
 
-# print(
-#     json.dumps(
-#         get_transactions_info_json(abs_json_path),
-#         indent=4,
-#     )
-# )
+# print(get_transactions_info_json(abs_json_path))
 
 
 def get_transactions_info_csv(input_csv_file: str) -> list[Any]:
     """Функция принимает на вход путь до файла csv и возвращает список словарей"""
     with open(input_csv_file, newline="", encoding="utf-8") as csv_file:
         result_csv = []
-        dicts_csv = {}
+
         try:
             logger.info("Путь до файла csv верный")
             reader_csv = csv.DictReader(csv_file, delimiter=";")
             for row in reader_csv:
+                dicts_csv = {}
                 dicts_csv["id"] = row["id"]
                 dicts_csv["state"] = row["state"]
                 dicts_csv["date"] = row["date"]
@@ -90,12 +89,7 @@ def get_transactions_info_csv(input_csv_file: str) -> list[Any]:
             return []
 
 
-# print(
-#     json.dumps(
-#         get_transactions_info_csv(abs_csv_path),
-#         indent=4,
-#     )
-# )
+# print(get_transactions_info_csv(abs_csv_path))
 
 
 def get_transactions_info_xlsx(input_xlsx_file: str) -> list[Any]:
@@ -103,7 +97,6 @@ def get_transactions_info_xlsx(input_xlsx_file: str) -> list[Any]:
 
     df = pd.read_excel(abs_xlsx_path)
     result_xlsx = []
-    dicts_xlsx = {}
 
     try:
         logger.info("Путь до файла csv верный")
@@ -112,6 +105,7 @@ def get_transactions_info_xlsx(input_xlsx_file: str) -> list[Any]:
         df_dict = df.to_dict("records")
 
         for i in df_dict:
+            dicts_xlsx = {}
             dicts_xlsx["id"] = i["id"]
             dicts_xlsx["state"] = i["state"]
             dicts_xlsx["date"] = i["date"]
@@ -136,9 +130,68 @@ def get_transactions_info_xlsx(input_xlsx_file: str) -> list[Any]:
         return []
 
 
+# print(get_transactions_info_xlsx(abs_xlsx_path))
+
+
+def filter_by_description(input_list: list[Any], search_string: str) -> list[Any]:
+    """Функция принимает на вход список словарей
+    и возвращает список словарей, отфильтрованный по заданном слову в описании транзакций
+    """
+    pattern = re.compile(search_string, re.IGNORECASE)
+    filtered_lists = []
+    for i in input_list:
+        # i.get("description") == str(i.get("description"))
+        match = pattern.search(str(i.get("description")))
+        if match:
+            filtered_lists.append(i)
+
+    return filtered_lists
+
+
+# print(filter_by_description(get_transactions_info_json(abs_json_path), 'перевод'))
+# print(filter_by_description(get_transactions_info_csv(abs_csv_path), 'Перевод'))
+# print(filter_by_description(get_transactions_info_xlsx(abs_xlsx_path), 'перевод'))
+
+
+def categories_counter(input_list: list[Any], categories_list: list[Any]) -> dict:
+    """Функция принимает на вход исходный список словарей
+    и список категорий и возвращает словарь с количеством операций в каждой категории"""
+    result = []
+    for i in input_list:
+        if i.get("description") in categories_list:
+            result.append(str(i["description"]))
+    count = Counter(result)
+    return count
+
+
 # print(
-#     json.dumps(
-#         get_transactions_info_xlsx(abs_xlsx_path),
-#         indent=4,
+#     categories_counter(
+#         get_transactions_info_csv(abs_csv_path),
+#         [
+#             "Перевод организации",
+#             "Перевод с карты на карту",
+#             "Открытие вклада",
+#             "Перевод со счета на счет",
+#         ],
 #     )
 # )
+
+
+def filter_by_currency(input_list: list[Any], currency_string: str) -> list[Any]:
+    """Функция принимает на вход список словарей
+    и возвращает список словарей, отфильтрованный по заданной валюте"""
+    pattern = re.compile(currency_string, re.IGNORECASE)
+    filtered_currency_lists = []
+    for i in input_list:
+        if "operationAmount" in i:
+            # i.get("description") == str(i.get("description"))
+            match = pattern.search(str(i.get("operationAmount")["currency"]["code"]))
+            if match:
+                filtered_currency_lists.append(i)
+
+    return filtered_currency_lists
+
+
+# print(filter_by_currency(get_transactions_info_json(abs_json_path), 'RUB'))
+# print(filter_by_currency(get_transactions_info_csv(abs_csv_path), 'RUB'))
+# print(filter_by_currency(get_transactions_info_xlsx(abs_xlsx_path), 'RUB'))
